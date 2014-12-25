@@ -1,0 +1,1 @@
+remove trash files in Windows7
