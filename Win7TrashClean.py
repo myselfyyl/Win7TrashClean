@@ -1,6 +1,6 @@
+#!/bin/python
 
-
-import os, exceptions
+import os, exceptions, logging
 
 def removeFile( f ):
     print f
@@ -9,12 +9,13 @@ def removeFile( f ):
             files = os.listdir( f )
             if 0 < len( files ):
                 for t in files:
-                    removeFile( f + '\\' + t )
+                    removeFile( f + os.sep + t )
             os.removedirs( f )
         else:
             os.unlink( f )
+        logging.info( f )
     except exceptions.StandardError as e:
-        print e
+        pass
         
         
 def removeFiles( files ):
@@ -23,10 +24,17 @@ def removeFiles( files ):
         
 
 if '__main__' == __name__ :
+    logname = os.path.join( os.getcwd(), "CleanLog.txt" )
+
+    if os.path.exists( logname ):
+        os.unlink( logname )
+        
+    logging.basicConfig( filename = logname, level = logging.INFO )
+    
     dirs = ('C:\\windows\\temp', )
     for d in dirs:
         if os.path.exists( d ):
             files = os.listdir( d )
-            removeFiles( map( lambda f: d + '\\' + f, files ) )
+            removeFiles( map( lambda f: d + os.sep + f , files ) )
 
     raw_input('press any key to continue .')
